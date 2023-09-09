@@ -12,7 +12,6 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
-using Terraria.ModLoader.UI;
 using Terraria.UI;
 
 namespace DivineSandbox.Features.AttentionWhorer;
@@ -26,24 +25,50 @@ namespace DivineSandbox.Features.AttentionWhorer;
 /// </summary>
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class AttentionWhorerSystem : ModSystem {
-    private sealed class UiAnimatedImageAlwaysHovering : UIAnimatedImage {
-        public UiAnimatedImageAlwaysHovering(Asset<Texture2D> texture, int width, int height, int textureOffsetX, int textureOffsetY, int countX, int countY, int padding = 2) : base(
-            texture,
-            width,
-            height,
-            textureOffsetX,
-            textureOffsetY,
-            countX,
-            countY,
-            padding
-        ) { }
+    private sealed class UiAnimatedImageAlwaysHovering : UIElement {
+        private readonly Asset<Texture2D> texture;
+        private readonly int countY;
+        private int tickCounter;
+        private int frameCounter;
+
+        public int FrameCount { get; set; } = 1;
+
+        public int TicksPerFrame { get; set; } = 5;
+
+        private int DrawHeight => (int)Height.Pixels;
+
+        private int DrawWidth => (int)Width.Pixels;
+
+        public UiAnimatedImageAlwaysHovering(Asset<Texture2D> texture, int width, int height, int countY) {
+            this.texture = texture;
+            this.countY = countY;
+            Width.Pixels = width;
+            Height.Pixels = height;
+        }
+
+        private Rectangle FrameToRect(int frame) {
+            var horizIndex = frame / countY;
+            var vertIndex = frame % countY;
+            return new Rectangle(horizIndex * DrawWidth, vertIndex * DrawHeight, DrawWidth, DrawHeight);
+        }
+
+        public override void Update(GameTime gameTime) {
+            base.Update(gameTime);
+
+            if (++tickCounter < TicksPerFrame)
+                return;
+
+            tickCounter = 0;
+            if (++frameCounter < FrameCount)
+                return;
+
+            frameCounter = 0;
+        }
 
         protected override void DrawSelf(SpriteBatch spriteBatch) {
-            var origIsMouseHovering = IsMouseHovering;
-            MouseOut(null);
-            base.DrawSelf(spriteBatch);
-            if (origIsMouseHovering)
-                MouseOver(null);
+            var dims = GetDimensions();
+            var frame = frameCounter % FrameCount;
+            spriteBatch.Draw(texture.Value, dims.ToRectangle(), FrameToRect(frame), Color.White);
         }
     }
 
@@ -55,7 +80,8 @@ internal sealed class AttentionWhorerSystem : ModSystem {
             var realTextOriginX = TextOriginX;
 
             SetText(RainbowifyText(realText));
-            TextOriginX = FontAssets.MouseText.Value.MeasureString(realText).X * 0.5f;
+            var textSize = FontAssets.MouseText.Value.MeasureString(realText);
+            TextOriginX = textSize.X * 0.5f;
             base.DrawSelf(spriteBatch);
 
             TextOriginX = realTextOriginX;
@@ -106,13 +132,13 @@ internal sealed class AttentionWhorerSystem : ModSystem {
         c.Emit(OpCodes.Callvirt, modNameProperty.GetMethod!);
         c.EmitDelegate((UIImage modIconImage, string modName) => {
             if (modName == "DivineSandbox") {
-                return new UiAnimatedImageAlwaysHovering(ModContent.Request<Texture2D>("DivineSandbox/Assets/Images/FramedIcon"), 80, 80, 0, 0, 1, 16, padding: 0) {
+                return new UiAnimatedImageAlwaysHovering(ModContent.Request<Texture2D>("DivineSandbox/Assets/Images/FramedIcon"), 80, 80, 31) {
                     Left = { Percent = 0f },
                     Top = { Percent = 0f },
                     Width = { Pixels = 80 },
                     Height = { Pixels = 80 },
-                    TicksPerFrame = 10,
-                    FrameCount = 16,
+                    TicksPerFrame = 4,
+                    FrameCount = 32,
                 };
             }
 
@@ -165,7 +191,7 @@ internal sealed class AttentionWhorerSystem : ModSystem {
         c.Emit(OpCodes.Ldarg_0);
         c.EmitDelegate((float scale, UIText text) => {
             if (text is UiTextBabiesFirstYoutubeVideo)
-                return new Vector2(scale * MathF.Sin(Main.GlobalTimeWrappedHourly), scale);
+                return new Vector2(scale * MathF.Sin(Main.GlobalTimeWrappedHourly * 3f), scale);
 
             return new Vector2(scale);
         });

@@ -1,0 +1,5 @@
+UI: {
+	MenuId: Menu ID: {0}
+	MenuIdWithKnownName: Menu ID: {0} ({1})
+	MenuUiInfo: UI State: {0}, IsVisible: {1}
+}
