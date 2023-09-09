@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AomojiVanity.Build", "Aomoj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DivineSandbox", "DivineSandbox\DivineSandbox.csproj", "{38671665-78A0-4737-B338-FBE2E57B2CA6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AomojiCommonLibs", "aomoji-vanity\src\AomojiCommonLibs\AomojiCommonLibs.csproj", "{9CC18DB9-F579-4661-859E-582FEC84AB20}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,5 +28,9 @@ Global
 		{38671665-78A0-4737-B338-FBE2E57B2CA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38671665-78A0-4737-B338-FBE2E57B2CA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38671665-78A0-4737-B338-FBE2E57B2CA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CC18DB9-F579-4661-859E-582FEC84AB20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CC18DB9-F579-4661-859E-582FEC84AB20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CC18DB9-F579-4661-859E-582FEC84AB20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CC18DB9-F579-4661-859E-582FEC84AB20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
