@@ -42,11 +42,7 @@ internal sealed class AttentionWhorerSystem : ModSystem {
     }
 
     private sealed class UiTextBabiesFirstYoutubeVideo : UIText {
-        private int frame;
-
         public UiTextBabiesFirstYoutubeVideo(string text, float textScale = 1, bool large = false) : base(text, textScale, large) { }
-
-        public UiTextBabiesFirstYoutubeVideo(LocalizedText text, float textScale = 1, bool large = false) : base(text, textScale, large) { }
 
         protected override void DrawSelf(SpriteBatch spriteBatch) {
             var realText = Text;
@@ -62,18 +58,6 @@ internal sealed class AttentionWhorerSystem : ModSystem {
 
         private static string RainbowifyText(string text) {
             var sb = new StringBuilder(text.Length * 12);
-
-            /*var frameHue = (frame % 300) / 300f;
-            var h = 1.5f - (Main.GlobalTimeWrappedHourly * speed % 360);
-            var s = 1f;
-            var l = 0.5f;
-
-            for (var i = 0; i < text.Length; i++) {
-                var c = text[i];
-                var charHue = (frameHue + i * 0.1f) % 1f;
-                var color = Main.hslToRgb(1.5f - h, s, l);
-                sb.Append($"[c/{color.R:X2}{color.G:X2}{color.B:X2}:{c}]");
-            }*/
 
             var frame = Main.GlobalTimeWrappedHourly * 0.1f;
 
