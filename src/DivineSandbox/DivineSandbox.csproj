@@ -3,7 +3,7 @@
     <Import Project="../AomojiVanity.Build/AomojiVanity.Build.targets" />
 
     <PropertyGroup>
-        <AssemblyName>Hikari</AssemblyName>
+        <AssemblyName>DivineSandbox</AssemblyName>
         <TargetFramework>net6.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
