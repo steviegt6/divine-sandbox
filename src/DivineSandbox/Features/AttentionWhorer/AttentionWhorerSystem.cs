@@ -17,6 +17,13 @@ using Terraria.UI;
 
 namespace DivineSandbox.Features.AttentionWhorer;
 
+/// <summary>
+///     Makes edits to the Mod List UI to obnoxiously bring attention to our mod
+///     through silly graphical changes.
+///     <br />
+///     Animates the mod icon, rainbowifies the mod name, and animates the mod
+///     name to appear three-dimensional.
+/// </summary>
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class AttentionWhorerSystem : ModSystem {
     private sealed class UiAnimatedImageAlwaysHovering : UIAnimatedImage {
