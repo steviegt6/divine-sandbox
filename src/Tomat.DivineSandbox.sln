@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AomojiVanity.Build", "AomojiVanity.Build", "{4A2EFFF4-6FFA-4A5C-890B-15C10D8D2318}"
+	ProjectSection(SolutionItems) = preProject
+		AomojiVanity.Build\AomojiVanity.Build.DotNet.targets = AomojiVanity.Build\AomojiVanity.Build.DotNet.targets
+		AomojiVanity.Build\AomojiVanity.Build.ErrorChecker.targets = AomojiVanity.Build\AomojiVanity.Build.ErrorChecker.targets
+		AomojiVanity.Build\AomojiVanity.Build.ModLoader.targets = AomojiVanity.Build\AomojiVanity.Build.ModLoader.targets
+		AomojiVanity.Build\AomojiVanity.Build.targets = AomojiVanity.Build\AomojiVanity.Build.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DivineSandbox", "DivineSandbox\DivineSandbox.csproj", "{38671665-78A0-4737-B338-FBE2E57B2CA6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{38671665-78A0-4737-B338-FBE2E57B2CA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38671665-78A0-4737-B338-FBE2E57B2CA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38671665-78A0-4737-B338-FBE2E57B2CA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38671665-78A0-4737-B338-FBE2E57B2CA6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

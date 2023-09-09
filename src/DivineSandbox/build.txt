@@ -1,0 +1,4 @@
+﻿displayName = Divine Sandbox
+author = Tomat
+homepage = https://discord.gg/Jyqt9HYyzM
+version = 1.0.0
