@@ -11,7 +11,6 @@ using ReLogic.Content;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
