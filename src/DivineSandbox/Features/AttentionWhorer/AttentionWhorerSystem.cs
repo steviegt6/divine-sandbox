@@ -116,13 +116,13 @@ internal sealed class AttentionWhorerSystem : ModSystem {
         c.Emit(OpCodes.Callvirt, modNameProperty.GetMethod!);
         c.EmitDelegate((UIImage modIconImage, string modName) => {
             if (modName == "DivineSandbox") {
-                return new UiAnimatedImageAlwaysHovering(ModContent.Request<Texture2D>("DivineSandbox/Assets/Images/FramedIcon"), 80, 80, 0, 0, 1, 9, padding: 0) {
+                return new UiAnimatedImageAlwaysHovering(ModContent.Request<Texture2D>("DivineSandbox/Assets/Images/FramedIcon"), 80, 80, 0, 0, 1, 16, padding: 0) {
                     Left = { Percent = 0f },
                     Top = { Percent = 0f },
                     Width = { Pixels = 80 },
                     Height = { Pixels = 80 },
                     TicksPerFrame = 10,
-                    FrameCount = 9,
+                    FrameCount = 16,
                 };
             }
 
@@ -137,7 +137,7 @@ internal sealed class AttentionWhorerSystem : ModSystem {
             if (modName == "DivineSandbox") {
                 return new UiTextBabiesFirstYoutubeVideo(uiModName.Text) {
                     Left = uiModName.Left,
-                    Top = { Pixels = 5f }
+                    Top = { Pixels = 5f },
                 };
             }
 
