@@ -9,6 +9,7 @@ using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 using ReLogic.Content;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -49,11 +50,13 @@ internal sealed class AttentionWhorerSystem : ModSystem {
 
         protected override void DrawSelf(SpriteBatch spriteBatch) {
             var realText = Text;
+            var realTextOriginX = TextOriginX;
 
             SetText(RainbowifyText(realText));
-
+            TextOriginX = FontAssets.MouseText.Value.MeasureString(realText).X * 0.5f;
             base.DrawSelf(spriteBatch);
 
+            TextOriginX = realTextOriginX;
             SetText(realText);
         }
 
@@ -145,6 +148,20 @@ internal sealed class AttentionWhorerSystem : ModSystem {
     private static void CreateVector2Scale(ILContext il) {
         var c = new ILCursor(il);
 
+        var positionIndex = 0;
+        c.GotoNext(x => x.MatchLdflda<UIText>("_textSize"));
+        c.GotoPrev(x => x.MatchLdloca(out positionIndex));
+
+        c.GotoNext(x => x.MatchNewobj<Vector2>());
+        c.GotoNext(MoveType.After, x => x.MatchCall(out _));
+        c.Emit(OpCodes.Ldarg_0);
+        c.EmitDelegate((Vector2 origin, UIText text) => {
+            if (text is UiTextBabiesFirstYoutubeVideo)
+                return new Vector2(origin.X + text.TextOriginX, origin.Y);
+            
+            return origin;
+        });
+
         var vector2Float32Ctor = typeof(Vector2).GetConstructor(new[] { typeof(float) })!;
         c.GotoNext(MoveType.After, x => x.MatchCall(vector2Float32Ctor));
         var index = c.Index;
@@ -163,5 +180,15 @@ internal sealed class AttentionWhorerSystem : ModSystem {
             return new Vector2(scale);
         });
         c.Emit(OpCodes.Stloc, vector2Index);
+
+        c.Emit(OpCodes.Ldloc_S, (byte)positionIndex);
+        c.Emit(OpCodes.Ldarg_0);
+        c.EmitDelegate((Vector2 position, UIText text) => {
+            if (text is UiTextBabiesFirstYoutubeVideo)
+                return new Vector2(position.X + text.TextOriginX, position.Y);
+
+            return position;
+        });
+        c.Emit(OpCodes.Stloc_S, (byte)positionIndex);
     }
 }
