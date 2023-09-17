@@ -1,5 +1,5 @@
 ﻿Divine Sandbox
 
-Play God.
+Play God??
 
-Advanced cheat/utility mod designed for testing, showcasing, and experimenting.
+Divine Sandbox eventually aims to work as a replacement to mods such as HERO's Mod, allowing for convenient testing, showcasing, debugging, etc., but due to the scope of such a task, it currently focuses on implementing other features that are absent from existing mods.

@@ -1,4 +1,5 @@
 ﻿displayName = Divine Sandbox
 author = Tomat
 homepage = https://discord.gg/Jyqt9HYyzM
-version = 1.0.0
+version = 0.1.0
+modReferences = AomojiResourcePacks,AomojiCommonLibs

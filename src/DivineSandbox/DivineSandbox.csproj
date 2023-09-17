@@ -14,4 +14,9 @@
         <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\aomoji-vanity\src\AomojiResourcePacks\AomojiResourcePacks.csproj" />
+        <ProjectReference Include="..\..\..\aomoji-vanity\src\AomojiCommonLibs\AomojiCommonLibs.csproj" />
+    </ItemGroup>
+
 </Project>

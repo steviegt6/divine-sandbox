@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
+﻿using System.Linq;
 using DivineSandbox.Util;
+using DivineSandbox.Util.Reflection;
+using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil.Cil;
@@ -11,7 +11,6 @@ using ReLogic.Graphics;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DivineSandbox.Features.MenuIdDebugger;
@@ -20,6 +19,7 @@ namespace DivineSandbox.Features.MenuIdDebugger;
 ///     Displays the current menu ID in the top-left corner of the screen, as
 ///     well as the UI state if applicable.
 /// </summary>
+[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 internal sealed class MenuIdDebuggingSystem : ModSystem {
     private const string menu_id_key = "Mods.DivineSandbox.UI.MenuId";
     private const string menu_id_with_known_name_key = "Mods.DivineSandbox.UI.MenuIdWithKnownName";
@@ -35,7 +35,17 @@ internal sealed class MenuIdDebuggingSystem : ModSystem {
         if (!ModLoader.TryGetMod("TerrariaOverhaul", out var terrariaOverhaul))
             return;
 
-        terrariaOverhaulDrawOverlayEdit = new ILHook(terrariaOverhaul.Code.GetType("TerrariaOverhaul.Common.MainMenuOverlays.MainMenuOverlaySystem")!.GetMethod("DrawOverlay", BindingFlags.Static | BindingFlags.NonPublic)!, DrawOverlayEdit);
+        if (!terrariaOverhaul.Code.TryGetType("TerrariaOverhaul.Common.MainMenuOverlays.MainMenuOverlaySystem", out var mainMenuOverlaySystem)) {
+            Mod.Logger.Warn("Failed to find type: TerrariaOverhaul.Common.MainMenuOverlays.MainMenuOverlaySystem");
+            return;
+        }
+
+        if (!mainMenuOverlaySystem.TryGetMethod("DrawOverlay", null, out var drawOverlayMethod)) {
+            Mod.Logger.Warn("Failed to find method: TerrariaOverhaul.Common.MainMenuOverlays.MainMenuOverlaySystem::DrawOverlay");
+            return;
+        }
+
+        terrariaOverhaulDrawOverlayEdit = new ILHook(drawOverlayMethod, DrawOverlayEdit);
     }
 
     public override void Unload() {

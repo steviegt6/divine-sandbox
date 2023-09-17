@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Reflection;
 using System.Text;
+using DivineSandbox.Util.Reflection;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -31,9 +31,9 @@ internal sealed class AttentionWhorerSystem : ModSystem {
         private int tickCounter;
         private int frameCounter;
 
-        public int FrameCount { get; set; } = 1;
+        public int FrameCount { get; init; } = 1;
 
-        public int TicksPerFrame { get; set; } = 5;
+        public int TicksPerFrame { get; init; } = 5;
 
         private int DrawHeight => (int)Height.Pixels;
 
@@ -108,10 +108,18 @@ internal sealed class AttentionWhorerSystem : ModSystem {
     public override void Load() {
         base.Load();
 
-        var uiModItemType = typeof(ModLoader).Assembly.GetType("Terraria.ModLoader.UI.UIModItem")!;
-        var onInitializeMethod = uiModItemType.GetMethod("OnInitialize", BindingFlags.Public | BindingFlags.Instance)!;
+        if (!typeof(ModLoader).Assembly.TryGetType("Terraria.ModLoader.UI.UIModItem", out var uiModItemType)) {
+            Mod.Logger.Error("Failed to find type: Terraria.ModLoader.UI.UIModItem");
+            return;
+        }
+
+        if (!uiModItemType.TryGetMethod("OnInitialize", null, out var onInitializeMethod)) {
+            Mod.Logger.Error("Failed to find method: Terraria.ModLoader.UI.UIModItem::OnInitialize");
+            return;
+        }
+
         uiModItemOnInitializeHook = new ILHook(onInitializeMethod, EditUiModItemPresentationToBeObnoxiouslyAttentionGrabbing);
-        
+
         IL_UIText.DrawSelf += CreateVector2Scale;
     }
 
@@ -121,12 +129,29 @@ internal sealed class AttentionWhorerSystem : ModSystem {
         uiModItemOnInitializeHook?.Dispose();
     }
 
-    private static void EditUiModItemPresentationToBeObnoxiouslyAttentionGrabbing(ILContext il) {
+    private void EditUiModItemPresentationToBeObnoxiouslyAttentionGrabbing(ILContext il) {
         var c = new ILCursor(il);
 
-        var uiModItemType = typeof(ModLoader).Assembly.GetType("Terraria.ModLoader.UI.UIModItem")!;
-        var modIconField = uiModItemType.GetField("_modIcon", BindingFlags.NonPublic | BindingFlags.Instance)!;
-        var modNameProperty = uiModItemType.GetProperty("ModName", BindingFlags.Public | BindingFlags.Instance)!;
+        if (!typeof(ModLoader).Assembly.TryGetType("Terraria.ModLoader.UI.UIModItem", out var uiModItemType)) {
+            Mod.Logger.Error("Failed to find type: Terraria.ModLoader.UI.UIModItem");
+            return;
+        }
+        
+        if (!uiModItemType.TryGetField("_modIcon", null, out var modIconField)) {
+            Mod.Logger.Error("Failed to find field: Terraria.ModLoader.UI.UIModItem::_modIcon");
+            return;
+        }
+        
+        if (!uiModItemType.TryGetProperty("ModName", null, out var modNameProperty)) {
+            Mod.Logger.Error("Failed to find property: Terraria.ModLoader.UI.UIModItem::ModName");
+            return;
+        }
+        
+        if (!uiModItemType.TryGetField("_modName", null, out var modNameField)) {
+            Mod.Logger.Error("Failed to find method: Terraria.ModLoader.UI.UIModItem::OnInitialize");
+            return;
+        }
+
         c.GotoNext(MoveType.Before, x => x.MatchStfld(modIconField));
         c.Emit(OpCodes.Ldarg_0);
         c.Emit(OpCodes.Callvirt, modNameProperty.GetMethod!);
@@ -145,7 +170,6 @@ internal sealed class AttentionWhorerSystem : ModSystem {
             return (UIElement)modIconImage;
         });
 
-        var modNameField = uiModItemType.GetField("_modName", BindingFlags.NonPublic | BindingFlags.Instance)!;
         c.GotoNext(MoveType.Before, x => x.MatchStfld(modNameField));
         c.Emit(OpCodes.Ldarg_0);
         c.Emit(OpCodes.Callvirt, modNameProperty.GetMethod!);

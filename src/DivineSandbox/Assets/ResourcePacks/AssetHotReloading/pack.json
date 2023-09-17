@@ -1,0 +1,9 @@
+﻿{
+  "Name": "Divine Sandbox Asset Hot Reloader",
+  "Author": "Tomat",
+  "Description": "Enables mod asset hot reloading.",
+  "Version": {
+    "major": 1,
+    "minor": 0
+  }
+}
